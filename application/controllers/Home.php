@@ -64,4 +64,22 @@ class Home extends CI_Controller {
 
 	}
 
+	public function update($id){		
+
+		if( $this->input->post('atualizar') )
+		{
+			$this->artigos->update_artigo($id);
+			redirect(current_url());
+		}
+
+		$artigo = $this->artigos->get_artigos($id);
+
+		$data = array(
+			"artigo" => $artigo,
+		);
+
+		$this->load->view('update', $data);
+
+	}
+
 }

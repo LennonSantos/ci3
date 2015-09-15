@@ -12,9 +12,12 @@ class Model_artigos extends CI_Model {
                 $this->db->from('tb_artigos');
         }
 
-        public function get_artigos()
-        {
-                $query = $this->db->get('', 10);
+        public function get_artigos($id = null)
+        {       
+                if($id != null)                
+                        $this->db->where("id_artigo = {$id}");                
+
+                $query = $this->db->get();
                 return $query->result();
         }
 
@@ -27,13 +30,14 @@ class Model_artigos extends CI_Model {
                 $this->db->insert('', $this);
         }
 
-        public function update_entry()
+        public function update_artigo($id)
         {
-                $this->title    = $_POST['title'];
-                $this->content  = $_POST['content'];
-                $this->date     = time();
+                $this->autor_artigo   = $_POST['txtAutor'];
+                $this->titulo_artigo  = $_POST['txtTitulo'];
+                $this->texto_artigo   = $_POST['txtArtigo'];
 
-                $this->db->update('entries', $this, array('id' => $_POST['id']));
+                $this->db->where('id_artigo', $id);
+                $this->db->update( '', $this );
         }
 
         public function delete_artigo($id){
