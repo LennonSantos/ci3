@@ -19,6 +19,14 @@ class Home extends CI_Controller {
 	 * @see http://codeigniter.com/user_guide/general/urls.html
 	 */
 
+	public $head = array(
+		"title_website" => "Testando o Codeigniter versão 3",
+	);
+
+	public $footer = array(
+		"scripts" => array(),
+	); 
+
 	public function __construct(){
 
 		parent::__construct();
@@ -31,28 +39,33 @@ class Home extends CI_Controller {
 
 	public function index()
 	{			
-
 		$artigos = $this->artigos->get_artigos();
 
 		$data = array(
 			"artigos" => $artigos,
 		);
 
+		//data head
+		$this->head['title_website'] = $this->head['title_website'] . " &bull; Home Page";
+		
+		//scripts footer
+		$this->footer['scripts']['jquery.min'] = true;
+
+		$this->load->view('master_page/head', $this->head);
+		$this->load->view('master_page/nav');
 		$this->load->view('home', $data);
+		$this->load->view('master_page/footer', $this->footer);
 	}
 
-	public function cadastrar(){
+	public function cadastrar(){		
 
-		
+		if( $this->input->post('cadastrar') )
+			$this->artigos->insert_artigo();		
 
-		if( $this->input->post('cadastrar') ){
-
-			$this->artigos->insert_artigo();
-			//unset( $this->input->post('cadastrar') );
-
-		}
-
+		$this->load->view('master_page/head', $this->head);
+		$this->load->view('master_page/nav');
 		$this->load->view('cadastrar');
+		$this->load->view('master_page/footer', $this->footer);
 
 	}
 
@@ -78,7 +91,10 @@ class Home extends CI_Controller {
 			"artigo" => $artigo,
 		);
 
+		$this->load->view('master_page/head', $this->head);
+		$this->load->view('master_page/nav');
 		$this->load->view('update', $data);
+		$this->load->view('master_page/footer', $this->footer);
 
 	}
 

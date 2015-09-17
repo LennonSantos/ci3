@@ -15,7 +15,7 @@ class Model_artigos extends CI_Model {
         public function get_artigos($id = null)
         {       
                 if($id != null)                
-                        $this->db->where("id_artigo = {$id}");                
+                        $this->db->where("id_artigo = {$id}");     
 
                 $query = $this->db->get();
                 return $query->result();
@@ -23,7 +23,7 @@ class Model_artigos extends CI_Model {
 
         public function insert_artigo()
         {
-                $this->autor_artigo   = $_POST['txtAutor']; // please read the below note
+                $this->autor_artigo   = $_POST['txtAutor'];
                 $this->titulo_artigo  = $_POST['txtTitulo'];
                 $this->texto_artigo   = $_POST['txtArtigo'];
 
