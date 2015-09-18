@@ -21,6 +21,8 @@ class Home extends CI_Controller {
 
 	public $head = array(
 		"title_website" => "Testando o Codeigniter versão 3",
+		"key_page" => "",
+		"description_page" => "",
 	);
 
 	public $footer = array(
@@ -32,7 +34,8 @@ class Home extends CI_Controller {
 		parent::__construct();
 
 		$this->load->database();
-		$this->load->helper('url');
+		$this->load->helper( array('url', 'encrypt') );		
+		$this->load->helper('encrypt');
 		$this->load->model('model_artigos', 'artigos');		
 
 	}
@@ -72,23 +75,28 @@ class Home extends CI_Controller {
 	public function delete($id){
 
 		$this->artigos->delete_artigo($id);
-
 		redirect(base_url());
 
 	}
 
-	public function update($id){		
+	public function update($id = null){
+
+		// verifica se existe o id no banco
+		$id = ( $this->artigos->get_id_encrypt($id) == null ) ? null : $this->artigos->get_id_encrypt($id) ;
+		if( $id == null )
+			redirect(base_url());
 
 		if( $this->input->post('atualizar') )
 		{
-			$this->artigos->update_artigo($id);
+			$this->artigos->update_artigo($id[0]->id_artigo);
 			redirect(current_url());
 		}
 
-		$artigo = $this->artigos->get_artigos($id);
+		$artigo = $this->artigos->get_artigos($id[0]->id_artigo);
 
 		$data = array(
 			"artigo" => $artigo,
+			"id_artigo" => encrypt($id[0]->id_artigo),
 		);
 
 		$this->load->view('master_page/head', $this->head);

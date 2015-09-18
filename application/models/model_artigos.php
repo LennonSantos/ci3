@@ -47,4 +47,11 @@ class Model_artigos extends CI_Model {
 
         }
 
+        public function get_id_encrypt($id){
+                
+                $query = $this->db->query('SELECT id_artigo FROM tb_artigos WHERE MD5(id_artigo) = "'.$id.'" ');
+                return $query->result();
+
+        }
+
 }
